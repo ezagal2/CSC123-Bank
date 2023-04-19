@@ -6,7 +6,7 @@ import java.util.TreeMap;
 
 public class Bank implements Serializable {
 	
-	private static Map<Integer,Account> accounts=new TreeMap<Integer,Account>();
+	private static TreeMap<Integer,Account> accounts=new TreeMap<Integer,Account>();
 	private static Integer currentAccountNum;
 
 	public static CheckingAccount openCheckingAccount(String firstName, String lastName, String ssn, double overdraftLimit, String currencyType) throws FileNotFoundException {
@@ -112,9 +112,6 @@ public class Bank implements Serializable {
 	public static Map<Integer,Account> getAccounts (){
 		return accounts;
 	}
-	public static void mergeAccounts(Map<Integer,Account> accountsFromFile){
-		accounts.putAll(accountsFromFile);
-	}
 	public static void saveData() {
 		File file = new File("bankData.obj");
 		if (file.exists()) file.delete();
@@ -138,14 +135,12 @@ public class Bank implements Serializable {
 		try {
 			fileIn = new FileInputStream(file);
 			in = new ObjectInputStream(fileIn);
-			accounts = (Map<Integer, Account>) in.readObject();
+			accounts = (TreeMap<Integer, Account>) in.readObject();
 			currentAccountNum = (Integer) in.readObject();
 			in.close();
 			fileIn.close();
 			UniqueCounter.setValue(currentAccountNum);
-		} catch (IOException | ClassNotFoundException e) {
-			accounts = null;
-			currentAccountNum = null;
+		} catch (IOException | ClassNotFoundException ignored) {
 		}
 
 	}

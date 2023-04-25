@@ -1,3 +1,7 @@
+package com.bank.MainClasses;
+
+import com.bank.Utilities.UniqueCounter;
+
 import java.io.Serializable;
 
 public class Transaction implements Serializable{
@@ -13,7 +17,7 @@ public class Transaction implements Serializable{
 		super();
 		this.amount = amount;
 		this.type = type;
-		this.txnID=UniqueCounter.nextValue();
+		this.txnID= UniqueCounter.nextValue();
 	}
 
 	public double getAmount() {

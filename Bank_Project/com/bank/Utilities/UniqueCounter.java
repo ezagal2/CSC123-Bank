@@ -1,3 +1,5 @@
+package com.bank.Utilities;
+
 import java.io.Serializable;
 
 public class UniqueCounter implements Serializable {

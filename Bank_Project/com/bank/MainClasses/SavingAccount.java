@@ -1,6 +1,8 @@
+package com.bank.MainClasses;
+
 import java.io.FileNotFoundException;
 
-public class SavingAccount extends Account{
+public class SavingAccount extends Account {
 	private static final long serialVersionUID = 1L;
 
 	public SavingAccount(Customer customer, String currencyType) throws FileNotFoundException {

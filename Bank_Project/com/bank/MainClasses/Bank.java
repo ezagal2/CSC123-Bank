@@ -1,3 +1,8 @@
+package com.bank.MainClasses;
+
+import com.bank.Utilities.CSVReader;
+import com.bank.Utilities.UniqueCounter;
+
 import java.io.*;
 import java.util.Collection;
 import java.util.HashMap;
@@ -6,7 +11,7 @@ import java.util.TreeMap;
 
 public class Bank implements Serializable {
 	
-	private static TreeMap<Integer,Account> accounts=new TreeMap<Integer,Account>();
+	private static TreeMap<Integer,Account> accounts=new TreeMap<Integer, Account>();
 	private static Integer currentAccountNum;
 
 	public static CheckingAccount openCheckingAccount(String firstName, String lastName, String ssn, double overdraftLimit, String currencyType) throws FileNotFoundException {

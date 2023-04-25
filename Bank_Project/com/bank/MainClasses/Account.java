@@ -1,3 +1,8 @@
+package com.bank.MainClasses;
+
+import com.bank.Utilities.CSVReader;
+import com.bank.Utilities.UniqueCounter;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -20,7 +25,7 @@ public class Account implements Serializable {
 		accountName=name;
 		accountHolder=customer;
 		transactions=new ArrayList<Transaction>();
-		accountNumber=UniqueCounter.nextValue();
+		accountNumber= UniqueCounter.nextValue();
 		setCurrencyType(cType);
 	}
 

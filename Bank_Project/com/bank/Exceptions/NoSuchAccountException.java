@@ -1,4 +1,4 @@
-package com.bank.MainClasses;
+package com.bank.Exceptions;
 
 public class NoSuchAccountException extends Exception {
 

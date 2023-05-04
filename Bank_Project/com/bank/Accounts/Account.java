@@ -1,6 +1,10 @@
-package com.bank.MainClasses;
+package com.bank.Accounts;
 
-import com.bank.Utilities.CSVReader;
+import com.bank.Exceptions.AccountClosedException;
+import com.bank.Exceptions.InsufficientBalanceException;
+import com.bank.MainClasses.Customer;
+import com.bank.MainClasses.Transaction;
+import com.bank.Utilities.CurrencyReader;
 import com.bank.Utilities.UniqueCounter;
 
 import java.io.FileNotFoundException;
@@ -70,7 +74,6 @@ public class Account implements Serializable {
 	public void withdraw(double amount) throws InsufficientBalanceException, FileNotFoundException {
 			
 		double balance=getBalance();
-		HashMap<String, String> csvFile = CSVReader.readCSVFile();
 		double amnt = amount;
 		if(!isOpen()&&balance<=0) {
 			throw new InsufficientBalanceException("\nThe account is closed and balance is: "+balance+"\n\n");
@@ -126,9 +129,9 @@ public class Account implements Serializable {
 		double balanceInUSD = getBalance();
 		if (!currencyType.equals("USD")){
 			try {
-				HashMap<String, String> csvFile = CSVReader.readCSVFile();
+				HashMap<String, String> csvFile = CurrencyReader.readCSVFile();
 				balanceInUSD = Double.parseDouble(csvFile.get(currencyType).substring(csvFile.get(currencyType).indexOf(",") + 1)) * getBalance();
-			} catch (FileNotFoundException e) {
+			} catch (Exception e) {
 				throw new RuntimeException(e);
 			}
 		}

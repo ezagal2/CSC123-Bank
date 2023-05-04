@@ -1,6 +1,12 @@
 package com.bank.MainClasses;
 
-import com.bank.Utilities.CSVReader;
+import com.bank.Accounts.Account;
+import com.bank.Accounts.CheckingAccount;
+import com.bank.Accounts.SavingAccount;
+import com.bank.Exceptions.AccountClosedException;
+import com.bank.Exceptions.InsufficientBalanceException;
+import com.bank.Exceptions.NoSuchAccountException;
+import com.bank.Utilities.CurrencyReader;
 import com.bank.Utilities.UIManager;
 
 import java.io.*;
@@ -73,12 +79,16 @@ public class MainBank implements Serializable{
 		try {
 			do {
 
-
-				try{
-					csvFile = CSVReader.readCSVFile();
-				}catch (FileNotFoundException e){
+				if (CurrencyReader.isUsable()){
+					try{
+						csvFile = CurrencyReader.readCSVFile();
+					} catch (Exception e) {
+						ui.print(MSG_CSV_NOT_FOUND, null);
+					}
+				}else{
 					ui.print(MSG_CSV_NOT_FOUND, null);
 				}
+
 				option = ui.getMainOption(); //Render main menu
 
 				switch (option) {
@@ -87,15 +97,14 @@ public class MainBank implements Serializable{
 					//Compact statement to accept user input, open account, and print the result including the account number
 					CheckingAccount checkingAccount = Bank.openCheckingAccount(ui.readToken(MSG_FIRST_NAME),
 							ui.readToken(MSG_LAST_NAME), ui.readToken(MSG_SSN), ui.readDouble(MSG_ACCOUNT_OD_LIMIT), null);
-					String userInputCurrencyType = "";
 					String currencyType = "USD";
-					if (CSVReader.exist()) {
+					if (CurrencyReader.isUsable()) {
 						do {
-							userInputCurrencyType = ui.readToken(MSG_CURRENCY_TYPE);
-							if(!csvFile.containsKey(userInputCurrencyType)){
+							currencyType = ui.readToken(MSG_CURRENCY_TYPE);
+							if(!csvFile.containsKey(currencyType)){
 								ui.print(MSG_INVALID_CURRENCY_TYPE, null);
 							}
-						}while (!csvFile.containsKey(userInputCurrencyType));
+						}while (!csvFile.containsKey(currencyType));
 					}
 					checkingAccount.setCurrencyType(currencyType);
 					ui.print(MSG_ACCOUNT_OPENED, new Object[] { checkingAccount.getAccountNumber() });
@@ -106,7 +115,7 @@ public class MainBank implements Serializable{
 					SavingAccount savingAccount = Bank.openSavingAccount(ui.readToken(MSG_FIRST_NAME),
 							ui.readToken(MSG_LAST_NAME), ui.readToken(MSG_SSN), null);
 					String type = "USD";
-					if (CSVReader.exist()) {
+					if (CurrencyReader.isUsable()) {
 						do {
 							type = ui.readToken(MSG_CURRENCY_TYPE);
 							if(!csvFile.containsKey(type)){
@@ -173,7 +182,7 @@ public class MainBank implements Serializable{
 				case 8:
 
 					//Currency Conversion
-					if (!CSVReader.exist()) {
+					if (!CurrencyReader.isUsable()) {
 						ui.print(MSG_CSV_NOT_FOUND, null);
 						break;
 					}
@@ -205,6 +214,8 @@ public class MainBank implements Serializable{
 			ui.print(MSG_BANK_DATA_SAVED, null);
 		} catch (IOException e) {
 			e.printStackTrace();
+		} catch (Exception e) {
+			throw new RuntimeException(e);
 		}
 
 	}

@@ -1,4 +1,7 @@
-package com.bank.MainClasses;
+package com.bank.Accounts;
+
+import com.bank.Exceptions.InsufficientBalanceException;
+import com.bank.MainClasses.Customer;
 
 import java.io.FileNotFoundException;
 import java.io.Serializable;

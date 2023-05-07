@@ -2,12 +2,13 @@ package com.bank.Utilities;
 
 import java.io.*;
 import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Stream;
 
 public class Configuration {
     private static final HashMap<String, String> configFileContents = new HashMap<>();
-    private String configFile = "";
-
-    private Configuration() {
+    private static String configFile = "";
+    static {
         try{
             File file = new File("config.txt");
             FileReader in = new FileReader(file);
@@ -21,10 +22,13 @@ public class Configuration {
         }catch (IOException e){
             throw new RuntimeException(e);
         }
+    }
+
+    private Configuration() {
 
     }
 
-    private void parseToHashMap(){
+    private static void parseToHashMap(){
         String[] tempConfigFileContents = configFile.split("\n");
         for (String line : tempConfigFileContents) {
             String[] parts = line.split("=");
@@ -35,6 +39,7 @@ public class Configuration {
     }
 
     public static boolean supportCurrencies(){
+
         return Boolean.parseBoolean(configFileContents.get("support.currencies"));
     }
 
